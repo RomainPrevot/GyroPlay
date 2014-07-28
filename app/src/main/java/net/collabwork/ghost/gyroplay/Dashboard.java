@@ -1,19 +1,44 @@
 package net.collabwork.ghost.gyroplay;
 
 import android.app.Activity;
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class Dashboard extends Activity {
+public class Dashboard extends Activity implements SensorEventListener {
+
+    private SensorManager sensorManager;
+    private Sensor sensor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        // http://developer.android.com/guide/topics/sensors/sensors_motion.html#sensors-motion-rotate
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -32,5 +57,15 @@ public class Dashboard extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        Log.d(getClass().getName(), sensorEvent.toString());
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
     }
 }
