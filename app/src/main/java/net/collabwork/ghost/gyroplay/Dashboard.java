@@ -10,17 +10,29 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 
 public class Dashboard extends Activity implements SensorEventListener {
 
     private SensorManager sensorManager;
     private Sensor sensor;
+    private TextView txtX;
+    private TextView txtY;
+    private TextView txtZ;
+    private TextView txtT;
+
+    private float[] origin = new float[4];
+    private boolean originInit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        txtX = (TextView)findViewById(R.id.txtX);
+        txtY = (TextView)findViewById(R.id.txtY);
+        txtZ = (TextView)findViewById(R.id.txtZ);
+        txtT = (TextView)findViewById(R.id.txtT);
 
         // http://developer.android.com/guide/topics/sensors/sensors_motion.html#sensors-motion-rotate
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -38,6 +50,7 @@ public class Dashboard extends Activity implements SensorEventListener {
     protected void onPause() {
         super.onPause();
         sensorManager.unregisterListener(this);
+        originInit = false;
     }
 
     @Override
@@ -61,7 +74,17 @@ public class Dashboard extends Activity implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        Log.d(getClass().getName(), sensorEvent.toString());
+        if(!originInit){
+            origin = sensorEvent.values;
+            originInit = true;
+        }
+        float x = sensorEvent.values[0] - origin[0];
+        float y = sensorEvent.values[1] - origin[1];
+        float z = sensorEvent.values[2] - origin[2];
+
+        txtX.setText(String.valueOf(x));
+        txtY.setText(String.valueOf(y));
+        txtZ.setText(String.valueOf(z));
     }
 
     @Override
