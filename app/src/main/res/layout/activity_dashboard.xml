@@ -91,4 +91,23 @@
         android:layout_alignBottom="@+id/txtT"
         android:layout_toLeftOf="@+id/txtT" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtHost"
+        android:layout_below="@+id/txtT"
+        android:layout_alignRight="@+id/txtT"
+        android:layout_alignEnd="@+id/txtT"
+        android:layout_alignLeft="@+id/txtT"
+        android:layout_alignStart="@+id/txtT"
+        android:text="192.168.1.4" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connect"
+        android:id="@+id/btConnect"
+        android:layout_alignBottom="@+id/txtHost"
+        android:layout_toRightOf="@+id/txtHost" />
+
 </RelativeLayout>
